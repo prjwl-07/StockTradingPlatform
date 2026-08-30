@@ -1,0 +1,256 @@
+/* =========================
+   HOME PAGE
+========================= */
+
+.home-page {
+  color: #424242;
+  background: #fff;
+}
+
+.home-page h1,
+.home-page h2 {
+  color: #424242;
+  font-weight: 500;
+}
+
+.home-page p {
+  color: #666;
+  line-height: 1.8;
+}
+
+.home-page a {
+  color: #387ed1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.home-page a:hover {
+  color: #222;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero-section {
+  padding: 70px 20px 90px;
+  text-align: center;
+}
+
+.hero-image {
+  display: block;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 50px;
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.signup-btn {
+  background-color: #387ed1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 11px 30px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.signup-btn:hover {
+  background-color: #222;
+}
+
+
+/* =========================
+   COMMON SECTIONS
+========================= */
+
+.home-section {
+  padding: 80px 20px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.section-text {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+
+/* =========================
+   AWARDS
+========================= */
+
+.awards-image {
+  width: 100%;
+  max-width: 450px;
+  display: block;
+  margin: auto;
+}
+
+.awards-content {
+  padding-left: 40px;
+}
+
+.awards-content ul {
+  padding-left: 20px;
+}
+
+.awards-content li {
+  margin-bottom: 8px;
+}
+
+.awards-content li p {
+  margin: 0;
+}
+
+.press-logos {
+  width: 100%;
+  max-width: 550px;
+  margin-top: 30px;
+}
+
+
+/* =========================
+   STATS / TRUST
+========================= */
+
+.stats-content h2 {
+  font-size: 1.25rem;
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+.stats-content p {
+  color: #777;
+}
+
+.ecosystem-image {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: auto;
+}
+
+.stats-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+
+/* =========================
+   PRICING
+========================= */
+
+.pricing-boxes {
+  display: flex;
+}
+
+.price-box {
+  flex: 1;
+  min-height: 170px;
+  border: 1px solid #ddd;
+  padding: 30px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.price-box:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.price-box:last-child {
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+}
+
+.price-box h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.price-box p {
+  margin: 0;
+}
+
+
+/* =========================
+   EDUCATION
+========================= */
+
+.education-image {
+  width: 100%;
+  max-width: 430px;
+  display: block;
+  margin: auto;
+}
+
+.education-content p {
+  margin-bottom: 15px;
+}
+
+.education-content .education-second {
+  margin-top: 40px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 40px 15px 60px;
+  }
+
+  .hero-section h1 {
+    font-size: 2.1rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .home-section {
+    padding: 55px 20px;
+  }
+
+  .awards-content {
+    padding-left: 12px;
+    margin-top: 40px;
+  }
+
+  .stats-content {
+    margin-bottom: 40px;
+  }
+
+  .stats-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pricing-boxes {
+    margin-top: 35px;
+  }
+
+  .education-content {
+    margin-top: 40px;
+  }
+}

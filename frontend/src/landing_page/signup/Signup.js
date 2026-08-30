@@ -1,154 +1,176 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import "./Signup.css";
 
 function Signup() {
-  const [mobile, setMobile] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+    } else if (name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters";
+    }
+
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Backend signup logic will come here later
-    console.log("Mobile Number:", mobile);
+    setServerError("");
+
+    // Stop here if validation fails
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch("http://localhost:3002/auth/signup", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setServerError(data.message || "Signup failed");
+        return;
+      }
+
+      console.log("Signup successful:", data);
+
+      // Clear form after successful signup
+      setName("");
+      setEmail("");
+      setPassword("");
+      setErrors({});
+    } catch (error) {
+      console.error("Signup failed:", error);
+      setServerError("Unable to connect to the server");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <section className="container py-5">
-      <div
-        className="row align-items-center justify-content-between"
-        style={{ minHeight: "70vh" }}
-      >
-        {/* Left Section */}
-        <div className="col-12 col-lg-6 mb-5 mb-lg-0">
-          <div style={{ maxWidth: "520px" }}>
-            <p
-              className="fw-semibold mb-2"
-              style={{
-                color: "#387ed1",
-                letterSpacing: "1px",
-                fontSize: "0.9rem",
-              }}
-            >
-              START INVESTING TODAY
-            </p>
-
-            <h1
-              className="fw-semibold mb-4"
-              style={{
-                color: "#424242",
-                fontSize: "2.8rem",
-                lineHeight: "1.2",
-              }}
-            >
-              Open your free demat and trading account
-            </h1>
-
-            <p
-              className="text-muted mb-4"
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: "1.8",
-              }}
-            >
-              Start investing in stocks, mutual funds, ETFs, and more with a
-              simple and secure trading platform.
-            </p>
-
-            <div className="d-flex flex-column gap-3 text-muted">
-              <div>
-                <span className="me-3">✓</span>
-                Simple and fast account opening
-              </div>
-
-              <div>
-                <span className="me-3">✓</span>
-                Secure and reliable platform
-              </div>
-
-              <div>
-                <span className="me-3">✓</span>
-                Access stocks, mutual funds and ETFs
-              </div>
-            </div>
+    <div className="signup-page">
+      <div className="signup-card">
+        <div className="text-center mb-4">
+          <div className="brand-icon mb-3">
+            <i className="fa-solid fa-chart-line"></i>
           </div>
+
+          <h2 className="fw-semibold">Create your account</h2>
+
+          <p className="text-muted">Start your investing journey today</p>
         </div>
 
-        {/* Signup Card */}
-        <div className="col-12 col-lg-5">
-          <div
-            className="bg-white border rounded-4 p-4 p-md-5"
-            style={{
-              boxShadow: "0 15px 45px rgba(0, 0, 0, 0.07)",
-            }}
+        {serverError && (
+          <div className="alert alert-danger py-2">{serverError}</div>
+        )}
+
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="mb-3">
+            <label className="form-label">Full name</label>
+
+            <input
+              type="text"
+              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            {errors.name && (
+              <div className="invalid-feedback">{errors.name}</div>
+            )}
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Email address</label>
+
+            <input
+              type="email"
+              className={`form-control ${errors.email ? "is-invalid" : ""}`}
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email}</div>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label">Password</label>
+
+            <input
+              type="password"
+              className={`form-control ${errors.password ? "is-invalid" : ""}`}
+              placeholder="Minimum 8 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {errors.password && (
+              <div className="invalid-feedback">{errors.password}</div>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary w-100 signup-btn"
+            disabled={loading}
           >
-            <h2 className="fw-semibold mb-2" style={{ color: "#424242" }}>
-              Signup now
-            </h2>
+            {loading ? "Creating account..." : "Create Account"}
+          </button>
 
-            <p className="text-muted mb-4">
-              Enter your mobile number to get started
-            </p>
-
-            <form onSubmit={handleSubmit}>
-              <label className="form-label fw-medium">Mobile number</label>
-
-              <div className="input-group mb-4">
-                <span className="input-group-text bg-white px-3">+91</span>
-
-                <input
-                  type="tel"
-                  className="form-control py-3"
-                  placeholder="Enter 10 digit mobile number"
-                  value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
-                  maxLength="10"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary w-100 py-3 fw-medium"
-                style={{
-                  backgroundColor: "#387ed1",
-                  borderColor: "#387ed1",
-                  borderRadius: "7px",
-                }}
-              >
-                Continue
-              </button>
-            </form>
-
-            <p
-              className="text-muted text-center mt-4 mb-0"
-              style={{ fontSize: "0.85rem", lineHeight: "1.6" }}
-            >
-              By continuing, you agree to our{" "}
-              <a href="/" className="text-decoration-none">
-                terms
-              </a>{" "}
-              and{" "}
-              <a href="/" className="text-decoration-none">
-                privacy policy
-              </a>
-              .
-            </p>
-
-            <hr className="my-4" />
-
-            <p className="text-center text-muted mb-0">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-decoration-none fw-medium"
-                style={{ color: "#387ed1" }}
-              >
-                Login
-              </Link>
-            </p>
-          </div>
-        </div>
+          <p className="text-center text-muted mt-4 mb-0">
+            Already have an account?{" "}
+            <a href="/login" className="login-link">
+              Log in
+            </a>
+          </p>
+        </form>
       </div>
-    </section>
+    </div>
   );
 }
 

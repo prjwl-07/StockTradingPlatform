@@ -2,20 +2,24 @@ import React from "react";
 
 function Awards() {
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-6 p-5">
+    <section className="container home-section">
+      <div className="row align-items-center">
+        <div className="col-md-6">
           <img
             src="/media/images/largestBroker.svg"
             alt="Largest stock broker"
+            className="awards-image"
           />
         </div>
-        <div className="col-6 p-5 mt-5">
-          <h1>Largest stock broker in India</h1>
-          <p className="mb-5">
+
+        <div className="col-md-6 awards-content">
+          <h1 className="section-title">Largest stock broker in India</h1>
+
+          <p className="section-text mb-4">
             2+ million Zerodha clients contribute to over 15% of all retail
             order volumes in India daily by trading and investing in:
           </p>
+
           <div className="row">
             <div className="col-6">
               <ul>
@@ -30,6 +34,7 @@ function Awards() {
                 </li>
               </ul>
             </div>
+
             <div className="col-6">
               <ul>
                 <li>
@@ -44,14 +49,15 @@ function Awards() {
               </ul>
             </div>
           </div>
+
           <img
             src="/media/images/pressLogos.png"
             alt="Press logos"
-            style={{ width: "90%" }}
+            className="press-logos"
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

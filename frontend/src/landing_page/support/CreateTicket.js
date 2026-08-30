@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./CreateTicket.css";
 
 function CreateTicket() {
   const ticketTopics = [
@@ -79,37 +80,45 @@ function CreateTicket() {
   ];
 
   return (
-    <div className="container py-5">
-      <div className="text-center mb-5">
-        <h1 className="fs-2 fw-semibold">Create a support ticket</h1>
+    <section className="ticket-section">
+      <div className="container">
+        <div className="ticket-heading">
+          <span className="ticket-label">SUPPORT CENTER</span>
 
-        <p className="text-muted mt-2">
-          Select a relevant topic and find the help you need.
-        </p>
-      </div>
+          <h1>Create a support ticket</h1>
 
-      <div className="row g-4">
-        {ticketTopics.map((topic, index) => (
-          <div className="col-lg-4 col-md-6 col-12" key={index}>
-            <div className="ticket-card h-100 p-4">
-              <h4 className="ticket-title mb-4">
-                <i className={`fa ${topic.icon} me-3`} aria-hidden="true"></i>
+          <p>
+            Choose a category below to find answers and get the help you need.
+          </p>
+        </div>
 
-                {topic.title}
-              </h4>
+        <div className="row g-4">
+          {ticketTopics.map((topic, index) => (
+            <div className="col-lg-4 col-md-6 col-12" key={index}>
+              <div className="ticket-card">
+                <div className="ticket-card-header">
+                  <div className="ticket-icon">
+                    <i className={`fa ${topic.icon}`} aria-hidden="true"></i>
+                  </div>
 
-              <div className="d-flex flex-column gap-3">
-                {topic.links.map((link, linkIndex) => (
-                  <Link to="/support" className="ticket-link" key={linkIndex}>
-                    {link}
-                  </Link>
-                ))}
+                  <h4>{topic.title}</h4>
+                </div>
+
+                <div className="ticket-links">
+                  {topic.links.map((link, linkIndex) => (
+                    <Link to="/support" className="ticket-link" key={linkIndex}>
+                      <span>{link}</span>
+
+                      <i className="fa fa-angle-right" aria-hidden="true"></i>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

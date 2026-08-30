@@ -1,0 +1,304 @@
+/* ==================================
+   PRICING PAGE
+================================== */
+
+.pricing-page-wrapper {
+  color: #424242;
+  background: #fff;
+}
+
+
+/* ==================================
+   HERO
+================================== */
+
+.pricing-hero {
+  text-align: center;
+  padding: 85px 20px 65px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.pricing-hero h1 {
+  font-size: 2.6rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.pricing-hero p {
+  color: #777;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+
+/* ==================================
+   PRICING FEATURES
+================================== */
+
+.pricing-features {
+  padding: 85px 20px 100px;
+}
+
+.pricing-feature {
+  text-align: center;
+  padding: 15px 25px;
+  height: 100%;
+}
+
+.pricing-image-wrapper {
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.pricing-image-wrapper img {
+  width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.pricing-feature:hover img {
+  transform: translateY(-6px);
+}
+
+.pricing-feature h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.pricing-feature p {
+  max-width: 330px;
+  margin: auto;
+  color: #777;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+
+/* ==================================
+   BROKERAGE
+================================== */
+
+.brokerage-section {
+  padding: 90px 20px;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+}
+
+.brokerage-header {
+  max-width: 620px;
+  margin-bottom: 45px;
+}
+
+.brokerage-header span {
+  display: block;
+  color: #387ed1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.brokerage-header h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.brokerage-header p {
+  color: #777;
+  line-height: 1.7;
+  margin: 0;
+}
+
+
+/* ==================================
+   BROKERAGE BOX
+================================== */
+
+.brokerage-box,
+.charges-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+}
+
+.brokerage-box {
+  padding: 30px;
+}
+
+.brokerage-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 22px;
+  margin-bottom: 10px;
+
+  border-bottom: 1px solid #eee;
+}
+
+.brokerage-title h3 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.brokerage-title p {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.brokerage-action {
+  color: #387ed1;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.brokerage-action i {
+  margin-left: 8px;
+}
+
+
+/* ==================================
+   CHARGES LIST
+================================== */
+
+.charge-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 14px 5px;
+}
+
+.charge-number {
+  color: #aaa;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding-top: 3px;
+}
+
+.charge-item p {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+
+/* ==================================
+   LIST OF CHARGES CARD
+================================== */
+
+.charges-card {
+  padding: 32px;
+  height: 100%;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.charges-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.charges-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f0f6fc;
+  color: #387ed1;
+
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.charges-card h3 {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.charges-card p {
+  color: #777;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.charges-card a {
+  color: #387ed1;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.charges-card a i {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.charges-card a:hover i,
+.brokerage-action:hover i {
+  transform: translateX(4px);
+}
+
+
+/* ==================================
+   RESPONSIVE
+================================== */
+
+@media (max-width: 768px) {
+
+  .pricing-hero {
+    padding: 60px 15px 50px;
+  }
+
+  .pricing-hero h1 {
+    font-size: 2rem;
+  }
+
+  .pricing-features {
+    padding: 60px 15px;
+  }
+
+  .pricing-feature {
+    margin-bottom: 20px;
+  }
+
+  .brokerage-section {
+    padding: 60px 15px;
+  }
+
+  .brokerage-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .brokerage-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .brokerage-box {
+    padding: 22px;
+  }
+
+  .charges-card {
+    padding: 25px;
+  }
+}

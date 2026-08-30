@@ -1,50 +1,56 @@
 import React from "react";
+import "./Pricing.css";
 
 function Hero() {
+  const pricingItems = [
+    {
+      image: "/media/images/pricingEquity.svg",
+      title: "Free equity delivery",
+      description:
+        "All equity delivery investments (NSE, BSE) are absolutely free — ₹0 brokerage.",
+    },
+    {
+      image: "/media/images/intradayTrades.svg",
+      title: "Intraday and F&O trades",
+      description:
+        "Flat ₹20 or 0.03% (whichever is lower) per executed order on intraday trades across equity, currency, and commodity.",
+    },
+    {
+      image: "/media/images/pricingEquity.svg",
+      title: "Free direct mutual funds",
+      description:
+        "All direct mutual fund investments are absolutely free — ₹0 commissions and DP charges.",
+    },
+  ];
+
   return (
-    <div className="container">
-      <div className="row p-5 mt-5 border-bottom text-center">
-        <h1>Pricing</h1>
-        <h3 className="text-muted mt-3 fs-5">
-          Free equity investments and flat ₹20 traday and F&O trades
-        </h3>
-      </div>
-      <div className="row p-5 mt-5 text-center">
-        <div className="col-4 p-4">
-          <img
-            src="/media/images/pricingEquity.svg"
-            alt="Free equity delivery"
-          />
-          <h1 className="fs-3">Free equity delivery</h1>
-          <p className="text-muted">
-            All equity delivery investments (NSE, BSE), are absolutely free — ₹
-            0 brokerage.
-          </p>
+    <main className="pricing-page">
+      <section className="pricing-hero">
+        <div className="container">
+          <h1>Pricing</h1>
+          <p>Free equity investments and flat ₹20 intraday and F&O trades</p>
         </div>
-        <div className="col-4 p-4">
-          <img
-            src="/media/images/intradayTrades.svg"
-            alt="Intraday and F&O trades"
-          />
-          <h1 className="fs-3">Intraday and F&O trades</h1>
-          <p className="text-muted">
-            Flat Rs. 20 or 0.03% (whichever is lower) per executed order on
-            intraday trades across equity, currency, and commodity trades.
-          </p>
+      </section>
+
+      <section className="pricing-features">
+        <div className="container">
+          <div className="row g-5 justify-content-center">
+            {pricingItems.map((item, index) => (
+              <div className="col-lg-4 col-md-6" key={index}>
+                <div className="pricing-feature">
+                  <div className="pricing-image-wrapper">
+                    <img src={item.image} alt={item.title} />
+                  </div>
+
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="col-4 p-4">
-          <img
-            src="/media/images/pricingEquity.svg"
-            alt="Free direct mutual funds"
-          />
-          <h1 className="fs-3">Free direct MF</h1>
-          <p className="text-muted">
-            All direct mutual fund investments are absolutely free — ₹ 0
-            commissions & DP charges.
-          </p>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 

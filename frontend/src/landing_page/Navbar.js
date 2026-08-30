@@ -1,7 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Navbar() {
+  const navLinkStyle = ({ isActive }) => ({
+    color: isActive ? "#387ed1" : "#424242",
+    fontWeight: isActive ? "600" : "400",
+    borderBottom: isActive ? "2px solid #387ed1" : "2px solid transparent",
+  });
+
   return (
     <nav
       className="navbar navbar-expand-lg border-bottom shadow-sm"
@@ -9,13 +15,13 @@ function Navbar() {
     >
       <div className="container py-2">
         {/* Logo */}
-        <Link className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/">
           <img
             src="/media/images/logo.svg"
             style={{ width: "140px" }}
             alt="Logo"
           />
-        </Link>
+        </NavLink>
 
         {/* Mobile Menu Button */}
         <button
@@ -34,33 +40,43 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-3">
             <li className="nav-item">
-              <Link className="nav-link" to="/signup">
+              <NavLink
+                className="nav-link"
+                style={navLinkStyle}
+                to="/dashboard"
+              >
+                Dashboard
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" style={navLinkStyle} to="/signup">
                 Signup
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/about">
+              <NavLink className="nav-link" style={navLinkStyle} to="/about">
                 About
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/product">
+              <NavLink className="nav-link" style={navLinkStyle} to="/product">
                 Product
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/pricing">
+              <NavLink className="nav-link" style={navLinkStyle} to="/pricing">
                 Pricing
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/support">
+              <NavLink className="nav-link" style={navLinkStyle} to="/support">
                 Support
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

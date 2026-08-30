@@ -1,0 +1,365 @@
+.order-window-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.order-window-modal {
+  width: 480px;
+  max-width: 92vw;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.order-window-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.order-window-header.buy-bg {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.order-window-header.sell-bg {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.header-ticker-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mode-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.header-ticker-title h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.exchange-sub {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.header-close-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.header-close-btn:hover {
+  opacity: 1;
+}
+
+.order-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-mode-group {
+  display: flex;
+  background: #e2e8f0;
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.mode-btn {
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  color: #64748b;
+  transition: all 0.15s;
+}
+
+.mode-btn.buy-tab.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.mode-btn.sell-tab.active {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.tab-product-group {
+  display: flex;
+  gap: 6px;
+}
+
+.prod-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.15s;
+}
+
+.prod-btn.active {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+  font-weight: 600;
+}
+
+.order-form-body {
+  padding: 20px;
+}
+
+.form-row-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.input-field-box {
+  flex: 1;
+}
+
+.input-field-box label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.number-stepper {
+  display: flex;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.number-stepper button {
+  width: 36px;
+  background: #f1f5f9;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.number-stepper button:hover {
+  background: #e2e8f0;
+}
+
+.number-stepper input {
+  width: 100%;
+  border: none;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  outline: none;
+}
+
+.input-field-box input[type="number"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.input-field-box input[type="number"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.disabled-input {
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed;
+}
+
+.qty-presets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.preset-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.qty-preset-btn {
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.qty-preset-btn:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.order-type-radios {
+  display: flex;
+  gap: 20px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.radio-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.radio-label input {
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.order-window-footer {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.margin-calc-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-title {
+  font-size: 0.72rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.m-amount {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.footer-button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.submit-order-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-blue {
+  background: #2563eb;
+}
+
+.btn-blue:hover {
+  background: #1d4ed8;
+}
+
+.btn-orange {
+  background: #ef4444;
+}
+
+.btn-orange:hover {
+  background: #dc2626;
+}
+
+.btn-cancel {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: #f1f5f9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
