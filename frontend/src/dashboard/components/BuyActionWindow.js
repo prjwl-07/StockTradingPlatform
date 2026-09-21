@@ -9,7 +9,7 @@ import "./BuyActionWindow.css";
 const BuyActionWindow = ({ uid, initialMode = "BUY" }) => {
   const generalContext = useContext(GeneralContext);
 
-  const { marketPrices } = generalContext;
+  const { marketPrices, setBalance } = generalContext;
 
   const [mode, setMode] = useState(initialMode);
 
@@ -56,7 +56,11 @@ const BuyActionWindow = ({ uid, initialMode = "BUY" }) => {
       // Send order to backend
       const response = await axios.post(
         "http://localhost:3002/newOrder",
-        orderData,
+        {
+          name: uid,
+          qty,
+          mode,
+        },
         {
           withCredentials: true,
         },
@@ -71,6 +75,8 @@ const BuyActionWindow = ({ uid, initialMode = "BUY" }) => {
        * Now tell Orders.jsx to fetch
        * the latest orders.
        */
+
+      setBalance(response.data.balance);
       generalContext.refreshOrders();
       generalContext.refreshHoldings();
 

@@ -24,6 +24,7 @@ export const GeneralContextProvider = (props) => {
   const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
   const [selectedStockUID, setSelectedStockUID] = useState("");
   const [orderMode, setOrderMode] = useState("BUY");
+  const [balance, setBalance] = useState(0);
 
   // Existing local state
   const [recentOrders, setRecentOrders] = useState([]);
@@ -128,6 +129,25 @@ export const GeneralContextProvider = (props) => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get("http://localhost:3002/auth/me", {
+          withCredentials: true,
+        });
+
+        setBalance(response.data.user.balance);
+      } catch (error) {
+        console.error(
+          "Failed to fetch current user:",
+          error.response?.data || error.message,
+        );
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
   return (
     <GeneralContext.Provider
       value={{
@@ -149,7 +169,10 @@ export const GeneralContextProvider = (props) => {
         refreshHoldings,
 
         marketPrices,
-        marketLoading
+        marketLoading,
+
+        balance,
+        setBalance,
       }}
     >
       {props.children}

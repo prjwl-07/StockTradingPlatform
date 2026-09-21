@@ -4,15 +4,24 @@ const HoldingsSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
-  name: String,
-  qty: Number,
-  avg: Number,
-  price: Number,
-  net: String,
-  day: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  qty: {
+    type: Number,
+    required: true,
+  },
+  avg: {
+    type: Number,
+    required: true,
+  },
 });
+
+// One holding per user per stock
+HoldingsSchema.index({ userId: 1, name: 1 }, { unique: true });
 
 const HoldingsModel = model("holding", HoldingsSchema);
 

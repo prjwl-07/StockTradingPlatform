@@ -164,6 +164,8 @@ const Holdings = () => {
 
                 <tbody>
                   {holdings.map((stock) => {
+                    const marketData = marketPrices[stock.name];
+
                     const currentPrice =
                       marketPrices[stock.name]?.currentPrice ?? stock.price;
 
@@ -172,6 +174,13 @@ const Holdings = () => {
                     const currentValue = currentPrice * stock.qty;
 
                     const pnl = currentValue - investedValue;
+
+                    const netChange =
+                      stock.avg > 0
+                        ? ((currentPrice - stock.avg) / stock.avg) * 100
+                        : 0;
+
+                    const dayChange = marketData?.changePercent ?? 0;
 
                     const isProfit = pnl >= 0;
 
@@ -201,18 +210,22 @@ const Holdings = () => {
                           </span>
                         </td>
 
-                        <td className={isProfit ? "profit-text" : "loss-text"}>
-                          {stock.net}
+                        <td
+                          className={
+                            netChange >= 0 ? "profit-text" : "loss-text"
+                          }
+                        >
+                          {netChange >= 0 ? "+" : ""}
+                          {netChange.toFixed(2)}%
                         </td>
 
                         <td
                           className={
-                            stock.day?.startsWith("-")
-                              ? "loss-text"
-                              : "profit-text"
+                            dayChange >= 0 ? "profit-text" : "loss-text"
                           }
                         >
-                          {stock.day}
+                          {dayChange >= 0 ? "+" : ""}
+                          {dayChange.toFixed(2)}%
                         </td>
                       </tr>
                     );

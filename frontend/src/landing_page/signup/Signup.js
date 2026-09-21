@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./Signup.css";
 
 function Signup() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,10 +57,12 @@ function Signup() {
 
       const response = await fetch("http://localhost:3002/auth/signup", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
+
+        // Allow cookie-based authentication
+        credentials: "include",
 
         body: JSON.stringify({
           name: name.trim(),
@@ -75,11 +80,14 @@ function Signup() {
 
       console.log("Signup successful:", data);
 
-      // Clear form after successful signup
+      // Clear form
       setName("");
       setEmail("");
       setPassword("");
       setErrors({});
+
+      // User is already logged in
+      navigate("/dashboard");
     } catch (error) {
       console.error("Signup failed:", error);
       setServerError("Unable to connect to the server");
@@ -106,6 +114,7 @@ function Signup() {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Name */}
           <div className="mb-3">
             <label className="form-label">Full name</label>
 
@@ -122,6 +131,7 @@ function Signup() {
             )}
           </div>
 
+          {/* Email */}
           <div className="mb-3">
             <label className="form-label">Email address</label>
 
@@ -138,6 +148,7 @@ function Signup() {
             )}
           </div>
 
+          {/* Password */}
           <div className="mb-4">
             <label className="form-label">Password</label>
 
@@ -154,6 +165,7 @@ function Signup() {
             )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             className="btn btn-primary w-100 signup-btn"

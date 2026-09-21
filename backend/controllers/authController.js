@@ -33,9 +33,23 @@ const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    // 5. Send response
+    // 5. Generate JWT
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    // 6. Set authentication cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // true in production
+      sameSite: "Lax",
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // 7. Send response
     return res.status(201).json({
-      message: "User registered successfully",
+      message: "Signup successful",
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -116,6 +130,7 @@ const getCurrentUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        balance: user.balance,
       },
     });
   } catch (error) {

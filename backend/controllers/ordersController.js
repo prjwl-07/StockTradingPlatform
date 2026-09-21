@@ -1,114 +1,216 @@
+const mongoose = require("mongoose");
 const { OrdersModel } = require("../model/OrdersModel");
 const { HoldingsModel } = require("../model/HoldingsModel");
+const { getStock } = require("../market/dummyMarket");
+const User = require("../model/UserModel");
 
 const createOrder = async (req, res) => {
+  const session = await mongoose.startSession();
+
   try {
-    const { name, qty, price, mode } = req.body;
+    const { name, qty, mode } = req.body;
     const userId = req.user.userId;
 
-    // BUY
-    if (mode === "BUY") {
-      const newOrder = new OrdersModel({
-        userId,
-        name,
-        qty,
-        price,
-        mode,
-      });
+    if (!name || !["BUY", "SELL"].includes(mode)) {
+      return res.status(400).json({ message: "Invalid order details" });
+    }
 
-      await newOrder.save();
+    if (!Number.isFinite(qty) || qty <= 0) {
+      return res.status(400).json({ message: "Quantity must be positive" });
+    }
 
-      const existingHolding = await HoldingsModel.findOne({
-        userId,
-        name,
-      });
+    const stock = getStock(name);
 
-      if (existingHolding) {
-        const oldQty = existingHolding.qty;
-        const oldAvg = existingHolding.avg;
+    if (!stock) {
+      return res.status(400).json({ message: "Stock not found" });
+    }
 
-        const newQty = oldQty + qty;
+    const price = stock.currentPrice;
 
-        const newAvg = (oldQty * oldAvg + qty * price) / newQty;
+    const result = await session.withTransaction(async () => {
+      const user = await User.findById(userId).session(session);
 
-        existingHolding.qty = newQty;
-        existingHolding.avg = newAvg;
+      if (!user) {
+        return {
+          status: 404,
+          body: { message: "User not found" },
+        };
+      }
 
-        await existingHolding.save();
-      } else {
-        const newHolding = new HoldingsModel({
+      const totalAmount = qty * price;
+
+      // =========================
+      // BUY
+      // =========================
+      if (mode === "BUY") {
+        // Atomically check balance and decrease it
+        const updatedUser = await User.findOneAndUpdate(
+          {
+            _id: userId,
+            balance: { $gte: totalAmount },
+          },
+          {
+            $inc: { balance: -totalAmount },
+          },
+          {
+            returnDocument: "after",
+            session,
+          },
+        );
+
+        if (!updatedUser) {
+          return {
+            status: 400,
+            body: { message: "Insufficient funds" },
+          };
+        }
+
+        // Find existing holding
+        const updatedHolding = await HoldingsModel.findOneAndUpdate(
+          {
+            userId,
+            name,
+          },
+          [
+            {
+              $set: {
+                qty: {
+                  $add: [{ $ifNull: ["$qty", 0] }, qty],
+                },
+
+                avg: {
+                  $cond: [
+                    { $eq: [{ $ifNull: ["$qty", 0] }, 0] },
+                    price,
+                    {
+                      $divide: [
+                        {
+                          $add: [
+                            { $multiply: ["$qty", "$avg"] },
+                            { $multiply: [qty, price] },
+                          ],
+                        },
+                        { $add: ["$qty", qty] },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          {
+            returnDocument: "after",
+            upsert: true,
+            session,
+            updatePipeline: true,
+          },
+        );
+
+        console.log(updatedHolding);
+
+        // Create order
+        await new OrdersModel({
           userId,
           name,
           qty,
-          avg: price,
           price,
-          net: "0%",
-          day: "0%",
-        });
+          mode,
+        }).save({ session });
 
-        await newHolding.save();
+        return {
+          status: 200,
+          body: {
+            message: "BUY order saved!",
+            balance: updatedUser.balance,
+          },
+        };
       }
 
-      return res.status(200).send("BUY order saved!");
-    }
+      // =========================
+      // SELL
+      // =========================
+      if (mode === "SELL") {
+        // Atomically check holding quantity and decrease it
+        const updatedHolding = await HoldingsModel.findOneAndUpdate(
+          {
+            userId,
+            name,
+            qty: { $gte: qty },
+          },
+          {
+            $inc: { qty: -qty },
+          },
+          {
+            returnDocument: "after",
+            session,
+          },
+        );
 
-    // SELL
-    if (mode === "SELL") {
-      const existingHolding = await HoldingsModel.findOne({
-        userId,
-        name,
-      });
+        if (!updatedHolding) {
+          return {
+            status: 400,
+            body: {
+              message: "Insufficient holdings",
+            },
+          };
+        }
 
-      // User doesn't own this stock
-      if (!existingHolding) {
-        return res.status(400).json({
-          message: "You don't own this stock",
-        });
+        // Add money atomically
+        const updatedUser = await User.findOneAndUpdate(
+          {
+            _id: userId,
+          },
+          {
+            $inc: { balance: totalAmount },
+          },
+          {
+            returnDocument: "after",
+            session,
+          },
+        );
+
+        // Remove holding document when quantity becomes zero
+        if (updatedHolding.qty === 0) {
+          await HoldingsModel.deleteOne(
+            { _id: updatedHolding._id },
+            { session },
+          );
+        }
+
+        // Create order
+        await new OrdersModel({
+          userId,
+          name,
+          qty,
+          price,
+          mode,
+        }).save({ session });
+
+        return {
+          status: 200,
+          body: {
+            message: "SELL order saved!",
+            balance: updatedUser.balance,
+          },
+        };
       }
 
-      // Trying to sell more than owned
-      if (qty > existingHolding.qty) {
-        return res.status(400).json({
-          message: "Insufficient holdings",
-        });
-      }
-
-      // Reduce holding quantity
-      existingHolding.qty -= qty;
-
-      // If all shares are sold, remove the holding
-      if (existingHolding.qty === 0) {
-        await HoldingsModel.deleteOne({
-          _id: existingHolding._id,
-        });
-      } else {
-        await existingHolding.save();
-      }
-
-      // Save the SELL order only after validation succeeds
-      const newOrder = new OrdersModel({
-        userId,
-        name,
-        qty,
-        price,
-        mode,
-      });
-
-      await newOrder.save();
-
-      return res.status(200).send("SELL order saved!");
-    }
-
-    return res.status(400).json({
-      message: "Invalid order mode",
+      return {
+        status: 400,
+        body: { message: "Invalid order mode" },
+      };
     });
+
+    return res.status(result.status).json(result.body);
   } catch (error) {
     console.error("ORDER ERROR:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Server Error",
       error: error.message,
     });
+  } finally {
+    await session.endSession();
   }
 };
 

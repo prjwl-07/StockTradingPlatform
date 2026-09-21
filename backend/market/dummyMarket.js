@@ -126,6 +126,21 @@ const getStocks = (symbols) => {
   });
 };
 
+const getStock = (symbol) => {
+  const stock = stocks[symbol];
+
+  if (!stock) {
+    return null;
+  }
+
+  return {
+    symbol: stock.symbol,
+    exchange: stock.exchange,
+    currentPrice: stock.price,
+  };
+};
+
 module.exports = {
   getStocks,
+  getStock,
 };
