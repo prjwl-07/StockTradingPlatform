@@ -1,39 +1,56 @@
 import React, { useState, useContext } from "react";
 import GeneralContext from "./GeneralContext";
+import axios from "axios";
 
 import { Tooltip, Grow } from "@mui/material";
 
 import {
-  BarChartOutlined,
+  // BarChartOutlined,
   KeyboardArrowDown,
   KeyboardArrowUp,
-  MoreHoriz,
+  // MoreHoriz,
 } from "@mui/icons-material";
 
-import { watchlist as initialWatchlist } from "../data/data";
 import { DoughnutChart } from "./DoughnoutChart";
 
-const WatchList = () => {
-  const { marketPrices } = useContext(GeneralContext);
+// ======================================================
+// WatchList
+// ======================================================
 
-  console.log("MARKET PRICES:", marketPrices);
+const WatchList = () => {
+  const { marketPrices, marketStocks, userWatchlist } =
+    useContext(GeneralContext);
+
+  const watchlist = userWatchlist.map((item) => {
+    const stock = marketStocks.find(
+      (marketStock) => marketStock.symbol === item.symbol,
+    );
+    const marketData = marketPrices[item.symbol];
+
+    return {
+      name: item.symbol,
+      price: marketData?.currentPrice ?? stock?.currentPrice,
+      percent: marketData?.changePercent ?? stock?.changePercent,
+      exchange: stock?.exchange,
+    };
+  });
 
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState(1);
 
-  const filteredWatchlist = initialWatchlist.filter((stock) =>
+  const filteredWatchlist = watchlist.filter((stock) =>
     stock.name.toLowerCase().includes(searchTerm.toLowerCase().trim()),
   );
 
   // Chart data
   const data = {
-    labels: initialWatchlist.slice(0, 6).map((stock) => stock.name),
+    labels: watchlist.slice(0, 6).map((stock) => stock.name),
 
     datasets: [
       {
         label: "Price (₹)",
 
-        data: initialWatchlist
+        data: watchlist
           .slice(0, 6)
           .map(
             (stock) => marketPrices[stock.name]?.currentPrice ?? stock.price,
@@ -64,14 +81,14 @@ const WatchList = () => {
           type="text"
           name="search"
           id="search"
-          placeholder="Search eg: INFY, TCS, RELIANCE, NIFTY"
+          placeholder="Search"
           className="search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <span className="counts">
-          {filteredWatchlist.length} / {initialWatchlist.length}
+          {filteredWatchlist.length} / {watchlist.length}
         </span>
       </div>
 
@@ -153,7 +170,7 @@ const WatchListItem = ({ stock, marketData }) => {
             {stock.name}
           </span>
 
-          <span className="exchange-badge">NSE</span>
+          <span className="exchange-badge">{stock.exchange ?? "NSE"}</span>
         </div>
 
         {/* Price + Change */}
@@ -184,65 +201,59 @@ const WatchListItem = ({ stock, marketData }) => {
 // ======================================================
 
 const WatchListActions = ({ stock }) => {
-  const generalContext = useContext(GeneralContext);
+  const { openBuyWindow, userWatchlist, setUserWatchlist } =
+    useContext(GeneralContext);
+  const [removing, setRemoving] = useState(false);
 
-  const handleBuyClick = (e) => {
-    e.stopPropagation();
-
-    generalContext.openBuyWindow(stock.name, "BUY");
+  const handleBuyClick = (event) => {
+    event.stopPropagation();
+    openBuyWindow(stock.name, "BUY");
   };
 
-  const handleSellClick = (e) => {
-    e.stopPropagation();
+  const handleSellClick = (event) => {
+    event.stopPropagation();
+    openBuyWindow(stock.name, "SELL");
+  };
 
-    generalContext.openBuyWindow(stock.name, "SELL");
+  const handleRemoveClick = async (event) => {
+    event.stopPropagation();
+    setRemoving(true);
+
+    try {
+      await axios.delete(
+        `http://localhost:3002/watchlist/${encodeURIComponent(stock.name)}`,
+        { withCredentials: true },
+      );
+
+      setUserWatchlist((current) =>
+        current.filter((item) => item.symbol !== stock.name),
+      );
+    } catch (error) {
+      console.error(
+        "Failed to remove from watchlist:",
+        error.response?.data || error.message,
+      );
+    } finally {
+      setRemoving(false);
+    }
   };
 
   return (
     <span className="actions">
       <div className="action-buttons-wrapper">
-        {/* BUY */}
-        <Tooltip
-          title="Buy (B)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
+        <button className="buy" onClick={handleBuyClick}>
+          Buy
+        </button>
+        <button className="sell" onClick={handleSellClick}>
+          Sell
+        </button>
+        <button
+          className="action"
+          onClick={handleRemoveClick}
+          disabled={removing}
         >
-          <button className="buy" onClick={handleBuyClick}>
-            Buy
-          </button>
-        </Tooltip>
-
-        {/* SELL */}
-        <Tooltip
-          title="Sell (S)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
-        >
-          <button className="sell" onClick={handleSellClick}>
-            Sell
-          </button>
-        </Tooltip>
-
-        {/* Analytics */}
-        <Tooltip
-          title="Analytics (A)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
-        >
-          <button className="action">
-            <BarChartOutlined className="icon" />
-          </button>
-        </Tooltip>
-
-        {/* More */}
-        <Tooltip title="More" placement="top" arrow TransitionComponent={Grow}>
-          <button className="action">
-            <MoreHoriz className="icon" />
-          </button>
-        </Tooltip>
+          {removing ? "Removing..." : "Remove"}
+        </button>
       </div>
     </span>
   );

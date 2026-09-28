@@ -27,10 +27,10 @@ const Menu = () => {
 
   const navItems = [
     { label: "Dashboard", path: "/dashboard" },
+    { label: "Explore", path: "/dashboard/explore" },
     { label: "Orders", path: "/dashboard/orders" },
     { label: "Holdings", path: "/dashboard/holdings" },
     { label: "Positions", path: "/dashboard/positions" },
-    { label: "Funds", path: "/dashboard/funds" },
     { label: "Apps", path: "/dashboard/apps" },
   ];
 

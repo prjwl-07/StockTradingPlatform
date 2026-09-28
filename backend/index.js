@@ -11,6 +11,7 @@ const positionsRoutes = require("./routes/positionsRoutes");
 const ordersRoutes = require("./routes/ordersRoutes");
 const authRoutes = require("./routes/authRoutes");
 const marketRoutes = require("./routes/marketRoutes");
+const watchlistRoutes = require("./routes/watchlistRoutes");
 
 // port and url
 const PORT = process.env.PORT || 3002;
@@ -36,6 +37,7 @@ app.use("/allPositions", positionsRoutes);
 app.use("/newOrder", ordersRoutes);
 app.use("/auth", authRoutes);
 app.use("/market", marketRoutes);
+app.use("/watchlist", watchlistRoutes);
 
 
 const startServer = async () => {

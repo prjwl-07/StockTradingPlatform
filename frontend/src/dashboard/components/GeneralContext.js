@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { watchlist } from "../data/data";
 import BuyActionWindow from "./BuyActionWindow";
 
 const GeneralContext = React.createContext({
@@ -25,6 +24,7 @@ export const GeneralContextProvider = (props) => {
   const [selectedStockUID, setSelectedStockUID] = useState("");
   const [orderMode, setOrderMode] = useState("BUY");
   const [balance, setBalance] = useState(0);
+  const [userWatchlist, setUserWatchlist] = useState([]);
 
   // Existing local state
   const [recentOrders, setRecentOrders] = useState([]);
@@ -36,6 +36,7 @@ export const GeneralContextProvider = (props) => {
 
   const [holdingsRefresh, setHoldingsRefresh] = useState(0);
 
+  const [marketStocks, setMarketStocks] = useState([]);
   const [marketPrices, setMarketPrices] = useState({});
   const [marketLoading, setMarketLoading] = useState(true);
 
@@ -83,35 +84,26 @@ export const GeneralContextProvider = (props) => {
   };
 
   useEffect(() => {
-    const fetchMarketPrices = async () => {
+    const fetchMarketStocks = async () => {
       try {
-        const symbols = watchlist.map((stock) => stock.name).join(",");
-
-        const response = await axios.get(
-          "http://localhost:3002/market/quotes",
-          {
-            params: {
-              symbols,
-            },
-          },
-        );
+        const response = await axios.get("http://localhost:3002/market/stocks");
+        const stocks = response.data;
 
         const prices = {};
 
-        response.data.forEach((stock) => {
-          if (stock.found) {
-            prices[stock.symbol] = {
-              currentPrice: stock.currentPrice,
-              changePercent: stock.changePercent,
-            };
-          }
+        stocks.forEach((stock) => {
+          prices[stock.symbol] = {
+            currentPrice: stock.currentPrice,
+            changePercent: stock.changePercent,
+          };
         });
 
+        setMarketStocks(stocks);
         setMarketPrices(prices);
         setMarketLoading(false);
       } catch (error) {
         console.error(
-          "Failed to fetch market prices:",
+          "Failed to fetch market stocks:",
           error.response?.data || error.message,
         );
 
@@ -120,10 +112,10 @@ export const GeneralContextProvider = (props) => {
     };
 
     // Fetch immediately when dashboard loads
-    fetchMarketPrices();
+    fetchMarketStocks();
 
     // Then fetch every 5 seconds
-    const interval = setInterval(fetchMarketPrices, 5000);
+    const interval = setInterval(fetchMarketStocks, 5000);
 
     // Stop polling when provider unmounts
     return () => clearInterval(interval);
@@ -148,6 +140,25 @@ export const GeneralContextProvider = (props) => {
     fetchCurrentUser();
   }, []);
 
+  useEffect(() => {
+    const fetchWatchlist = async () => {
+      try {
+        const response = await axios.get("http://localhost:3002/watchlist", {
+          withCredentials: true,
+        });
+
+        setUserWatchlist(response.data);
+      } catch (error) {
+        console.error(
+          "Failed to fetch watchlist:",
+          error.response?.data || error.message,
+        );
+      }
+    };
+
+    fetchWatchlist();
+  }, []);
+
   return (
     <GeneralContext.Provider
       value={{
@@ -168,11 +179,15 @@ export const GeneralContextProvider = (props) => {
         holdingsRefresh,
         refreshHoldings,
 
+        marketStocks,
         marketPrices,
         marketLoading,
 
         balance,
         setBalance,
+
+        userWatchlist,
+        setUserWatchlist,
       }}
     >
       {props.children}

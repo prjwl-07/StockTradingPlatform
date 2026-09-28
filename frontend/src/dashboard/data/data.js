@@ -53,7 +53,11 @@ export const watchlist = [
     percent: "1.04%",
     isDown: false,
   },
+
 ];
+
+// indices
+export const marketIndexes = ["NIFTY50", "SENSEX"];
 
 // holdings
 export const holdings = [

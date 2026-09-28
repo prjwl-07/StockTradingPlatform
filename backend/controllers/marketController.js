@@ -1,4 +1,7 @@
-const { getStocks } = require("../market/dummyMarket");
+const {
+  getStocks,
+  getAllStocks: getAllMarketStocks,
+} = require("../market/dummyMarket");
 
 const getStockQuote = async (req, res) => {
   try {
@@ -78,7 +81,17 @@ const getStockQuotes = async (req, res) => {
   }
 };
 
+const getAllStocks = async (req, res) => {
+  try {
+    const stocks = getAllMarketStocks();
+    res.status(200).json(stocks);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch stocks" });
+  }
+};
+
 module.exports = {
   getStockQuote,
   getStockQuotes,
+  getAllStocks
 };

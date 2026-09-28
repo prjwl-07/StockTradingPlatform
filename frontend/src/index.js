@@ -23,8 +23,10 @@ import Orders from "./dashboard/components/Orders";
 import Holdings from "./dashboard/components/Holdings";
 import Positions from "./dashboard/components/Positions";
 import Funds from "./dashboard/components/Funds";
+import Explore from "./dashboard/components/Explore";
 import Apps from "./dashboard/components/Apps";
 import ProtectedRoute from "./routes/ProtectedRoute";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -52,6 +54,7 @@ root.render(
         }
       >
         <Route index element={<Summary />} />
+        <Route path="explore" element={<Explore />} />
         <Route path="orders" element={<Orders />} />
         <Route path="holdings" element={<Holdings />} />
         <Route path="positions" element={<Positions />} />
