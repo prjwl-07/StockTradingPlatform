@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GeneralContext, HoldingsContext } from "../contexts";
 import { Link } from "react-router-dom";
 
 const Summary = () => {
+  const { balance } = useContext(GeneralContext);
+  const { totalInvestment, currentValue, totalPnL, pnlPercent } =
+    useContext(HoldingsContext);
+
   return (
     <div className="dashboard-summary-page">
       <div className="user-welcome-header">
         <div>
-          <h2>Portfolio Overview <span className="greeting-wave">👋</span></h2>
-          <p className="welcome-subtitle">Here is your portfolio snapshot for today.</p>
+          <h2>
+            Portfolio Overview <span className="greeting-wave">👋</span>
+          </h2>
+          <p className="welcome-subtitle">
+            Here is your portfolio snapshot for today.
+          </p>
         </div>
       </div>
 
@@ -19,7 +28,7 @@ const Summary = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-label">Available Balance</span>
-            <h3 className="kpi-value">₹4,043.10</h3>
+            <h3 className="kpi-value">₹{Number(balance).toFixed(2)}</h3>
             <span className="kpi-subtext">Equity Account</span>
           </div>
         </div>
@@ -30,9 +39,20 @@ const Summary = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-label">Holdings Value</span>
-            <h3 className="kpi-value">₹31,428.95</h3>
-            <span className="kpi-subtext profit-text">
-              <i className="fa-solid fa-arrow-trend-up"></i> +₹1,553.40 (+5.20%)
+            <h3 className="kpi-value">
+              ₹
+              {currentValue.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+              })}
+            </h3>
+            <span
+              className={`kpi-subtext ${totalPnL >= 0 ? "profit-text" : "loss-text"}`}
+            >
+              <i className="fa-solid fa-arrow-trend-up"></i>{" "}
+              {totalPnL >= 0 ? "+" : ""}₹
+              {totalPnL.toLocaleString("en-IN", { minimumFractionDigits: 2 })} (
+              {pnlPercent >= 0 ? "+" : ""}
+              {pnlPercent.toFixed(2)}%)
             </span>
           </div>
         </div>
@@ -43,7 +63,12 @@ const Summary = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-label">Total Investment</span>
-            <h3 className="kpi-value">₹29,875.55</h3>
+            <h3 className="kpi-value">
+              ₹
+              {totalInvestment.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+              })}
+            </h3>
             <span className="kpi-subtext">Holdings Portfolio</span>
           </div>
         </div>
@@ -69,13 +94,17 @@ const Summary = () => {
               <i className="fa-solid fa-chart-pie section-icon"></i>
               <h3>Equity Overview</h3>
             </div>
-            <Link to="/dashboard/funds" className="card-link">View Funds</Link>
+            <Link to="/dashboard/funds" className="card-link">
+              View Funds
+            </Link>
           </div>
 
           <div className="metric-rows">
             <div className="metric-row">
               <span className="metric-title">Available Cash</span>
-              <span className="metric-val highlight">₹4,043.10</span>
+              <span className="metric-val highlight">
+                ₹{Number(balance).toFixed(2)}
+              </span>
             </div>
             <div className="metric-row">
               <span className="metric-title">Opening Balance</span>
@@ -91,21 +120,40 @@ const Summary = () => {
               <i className="fa-solid fa-layer-group section-icon"></i>
               <h3>Holdings Overview</h3>
             </div>
-            <Link to="/dashboard/holdings" className="card-link">View Holdings</Link>
+            <Link to="/dashboard/holdings" className="card-link">
+              View Holdings
+            </Link>
           </div>
 
           <div className="metric-rows">
             <div className="metric-row">
               <span className="metric-title">Total P&L</span>
-              <span className="metric-val profit-text">+₹1,553.40 (+5.20%)</span>
+              <span
+                className={`metric-val ${totalPnL >= 0 ? "profit-text" : "loss-text"}`}
+              >
+                {totalPnL >= 0 ? "+" : ""}₹
+                {totalPnL.toLocaleString("en-IN", { minimumFractionDigits: 2 })}{" "}
+                ({pnlPercent >= 0 ? "+" : ""}
+                {pnlPercent.toFixed(2)}%)
+              </span>
             </div>
             <div className="metric-row">
               <span className="metric-title">Current Value</span>
-              <span className="metric-val">₹31,428.95</span>
+              <span className="metric-val">
+                ₹
+                {currentValue.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <div className="metric-row">
               <span className="metric-title">Investment Value</span>
-              <span className="metric-val">₹29,875.55</span>
+              <span className="metric-val">
+                ₹
+                {totalInvestment.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
           </div>
         </div>

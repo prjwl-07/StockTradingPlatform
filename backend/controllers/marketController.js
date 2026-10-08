@@ -90,8 +90,60 @@ const getAllStocks = async (req, res) => {
   }
 };
 
+const getHistoricalData = async (req, res) => {
+  try {
+    const { symbol } = req.params;
+    const requestedPeriod = req.query.period;
+
+    if (
+      requestedPeriod !== undefined &&
+      (typeof requestedPeriod !== "string" || !requestedPeriod.trim())
+    ) {
+      return res.status(400).json({
+        message: "Period must be a non-empty string",
+      });
+    }
+
+    const period = requestedPeriod?.trim() || "1yr";
+
+    const query = new URLSearchParams({
+      stock_name: symbol,
+      period,
+      filter: "price",
+    });
+
+    const response = await fetch(
+      `https://stock.indianapi.in/historical_data?${query}`,
+      {
+        headers: {
+          "X-API-Key": process.env.INDIAN_STOCK_MARKET_API,
+        },
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        message: "Failed to fetch historical market data",
+        error: data,
+      });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("MARKET API ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch historical market data",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getStockQuote,
   getStockQuotes,
-  getAllStocks
+  getAllStocks,
+  getHistoricalData
 };

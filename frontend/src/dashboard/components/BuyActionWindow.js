@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
 
-import GeneralContext from "./GeneralContext";
+import { GeneralContext } from "../contexts";
 
 import "./BuyActionWindow.css";
 

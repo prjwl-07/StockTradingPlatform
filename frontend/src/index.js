@@ -13,6 +13,7 @@ import ProductPage from "./landing_page/products/ProductsPage";
 import PricingPage from "./landing_page/pricing/PricingPage";
 import SupportPage from "./landing_page/support/SupportPage";
 
+
 import NotFound from "./landing_page/NotFound";
 
 import LandingLayout from "./LandingLayout";
@@ -26,6 +27,7 @@ import Funds from "./dashboard/components/Funds";
 import Explore from "./dashboard/components/Explore";
 import Apps from "./dashboard/components/Apps";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import StockDetails from "./dashboard/components/StockDetails";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -60,6 +62,7 @@ root.render(
         <Route path="positions" element={<Positions />} />
         <Route path="funds" element={<Funds />} />
         <Route path="apps" element={<Apps />} />
+        <Route path="/dashboard/stock/:symbol" element={<StockDetails />} />
       </Route>
     </Routes>
   </BrowserRouter>,

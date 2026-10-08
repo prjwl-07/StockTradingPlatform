@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Menu from "./Menu";
-import GeneralContext from "./GeneralContext";
+import { GeneralContext } from "../contexts";
 
 const formatChange = (change) =>
   change == null ? "--" : `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;

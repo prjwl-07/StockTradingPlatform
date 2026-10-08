@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 
-import GeneralContext from "./GeneralContext";
+import { GeneralContext } from "../contexts";
 
 const Orders = () => {
   const { ordersRefresh } = useContext(GeneralContext);

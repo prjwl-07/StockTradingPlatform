@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import GeneralContext from "./GeneralContext";
+import { GeneralContext } from "../contexts";
 
 const Funds = () => {
   const { balance } = useContext(GeneralContext);

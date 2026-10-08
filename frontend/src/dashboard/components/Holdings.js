@@ -1,81 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
-
-import GeneralContext from "./GeneralContext";
+import React, { useContext } from "react";
+import { HoldingsContext } from "../contexts";
 import { VerticalGraph } from "./VerticalGraph";
 
 const Holdings = () => {
-  const { holdingsRefresh, marketPrices } = useContext(GeneralContext);
+  const {
+    holdings,
+    holdingsLoading,
+    totalInvestment,
+    currentValue,
+    totalPnL,
+    pnlPercent,
+    chartData,
+  } = useContext(HoldingsContext);
 
-  const [holdings, setHoldings] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch user's holdings from MongoDB
-  useEffect(() => {
-    const fetchHoldings = async () => {
-      try {
-        const response = await axios.get("http://localhost:3002/allHoldings", {
-          withCredentials: true,
-        });
-
-        setHoldings(response.data);
-      } catch (error) {
-        console.error(
-          "Failed to fetch holdings:",
-          error.response?.data || error.message,
-        );
-
-        setHoldings([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHoldings();
-  }, [holdingsRefresh]);
-
-  if (loading) {
+  if (holdingsLoading) {
     return <div className="page-container">Loading holdings...</div>;
   }
-
-  // Total investment = average buy price × quantity
-  const totalInvestment = holdings.reduce(
-    (total, stock) => total + stock.avg * stock.qty,
-    0,
-  );
-
-  // Current value = current market price × quantity
-  const currentValue = holdings.reduce((total, stock) => {
-    const currentPrice = marketPrices[stock.name]?.currentPrice ?? stock.price;
-
-    return total + currentPrice * stock.qty;
-  }, 0);
-
-  const totalPnL = currentValue - totalInvestment;
-
-  const pnlPercent =
-    totalInvestment > 0 ? (totalPnL / totalInvestment) * 100 : 0;
-
-  const chartData = {
-    labels: holdings.map((stock) => stock.name),
-
-    datasets: [
-      {
-        label: "Current Value (₹)",
-
-        data: holdings.map((stock) => {
-          const currentPrice =
-            marketPrices[stock.name]?.currentPrice ?? stock.price;
-
-          return currentPrice * stock.qty;
-        }),
-
-        backgroundColor: "rgba(37, 99, 235, 0.75)",
-        borderColor: "#2563EB",
-        borderRadius: 6,
-      },
-    ],
-  };
 
   return (
     <div className="page-container">
@@ -163,73 +103,51 @@ const Holdings = () => {
                 </thead>
 
                 <tbody>
-                  {holdings.map((stock) => {
-                    const marketData = marketPrices[stock.name];
+                  {holdings.map((stock) => (
+                    <tr key={stock._id}>
+                      <td className="instrument-col">
+                        <span className="instrument-name">{stock.name}</span>
 
-                    const currentPrice =
-                      marketPrices[stock.name]?.currentPrice ?? stock.price;
+                        <span className="instrument-badge">NSE</span>
+                      </td>
 
-                    const investedValue = stock.avg * stock.qty;
+                      <td>{stock.qty}</td>
 
-                    const currentValue = currentPrice * stock.qty;
+                      <td>₹{Number(stock.avg).toFixed(2)}</td>
 
-                    const pnl = currentValue - investedValue;
+                      <td>₹{Number(stock.currentPrice).toFixed(2)}</td>
 
-                    const netChange =
-                      stock.avg > 0
-                        ? ((currentPrice - stock.avg) / stock.avg) * 100
-                        : 0;
+                      <td>₹{stock.currentValue.toFixed(2)}</td>
 
-                    const dayChange = marketData?.changePercent ?? 0;
-
-                    const isProfit = pnl >= 0;
-
-                    return (
-                      <tr key={stock._id}>
-                        <td className="instrument-col">
-                          <span className="instrument-name">{stock.name}</span>
-
-                          <span className="instrument-badge">NSE</span>
-                        </td>
-
-                        <td>{stock.qty}</td>
-
-                        <td>₹{Number(stock.avg).toFixed(2)}</td>
-
-                        <td>₹{Number(currentPrice).toFixed(2)}</td>
-
-                        <td>₹{currentValue.toFixed(2)}</td>
-
-                        <td>
-                          <span
-                            className={`pnl-badge ${
-                              isProfit ? "profit" : "loss"
-                            }`}
-                          >
-                            {isProfit ? "+" : ""}₹{pnl.toFixed(2)}
-                          </span>
-                        </td>
-
-                        <td
-                          className={
-                            netChange >= 0 ? "profit-text" : "loss-text"
-                          }
+                      <td>
+                        <span
+                          className={`pnl-badge ${
+                            stock.isProfit ? "profit" : "loss"
+                          }`}
                         >
-                          {netChange >= 0 ? "+" : ""}
-                          {netChange.toFixed(2)}%
-                        </td>
+                          {stock.isProfit ? "+" : ""}₹{stock.pnl.toFixed(2)}
+                        </span>
+                      </td>
 
-                        <td
-                          className={
-                            dayChange >= 0 ? "profit-text" : "loss-text"
-                          }
-                        >
-                          {dayChange >= 0 ? "+" : ""}
-                          {dayChange.toFixed(2)}%
-                        </td>
-                      </tr>
-                    );
-                  })}
+                      <td
+                        className={
+                          stock.netChange >= 0 ? "profit-text" : "loss-text"
+                        }
+                      >
+                        {stock.netChange >= 0 ? "+" : ""}
+                        {stock.netChange.toFixed(2)}%
+                      </td>
+
+                      <td
+                        className={
+                          stock.dayChange >= 0 ? "profit-text" : "loss-text"
+                        }
+                      >
+                        {stock.dayChange >= 0 ? "+" : ""}
+                        {stock.dayChange.toFixed(2)}%
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

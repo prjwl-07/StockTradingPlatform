@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import GeneralContext from "./GeneralContext";
+import { GeneralContext } from "../contexts";
 import axios from "axios";
 
 import { Tooltip, Grow } from "@mui/material";
@@ -123,7 +123,7 @@ const WatchList = () => {
       </div>
 
       {/* Pagination */}
-      <div className="watchlist-number">
+      {/* <div className="watchlist-number">
         <ul>
           {[1, 2, 3, 4, 5, 7].map((num) => (
             <li
@@ -137,7 +137,7 @@ const WatchList = () => {
         </ul>
 
         <span className="page-info">WL {activeTab}</span>
-      </div>
+      </div> */}
     </div>
   );
 };
