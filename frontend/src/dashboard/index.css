@@ -1585,6 +1585,41 @@ body {
   color: white;
 }
 
+
+.company-information {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+.company-information h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.company-information p {
+  margin: 0 0 14px;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.company-information div {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.company-information strong {
+  display: inline-block;
+  min-width: 75px;
+  color: #1e293b;
+}
+
+
 @media (max-width: 640px) {
   .explore-stock-grid {
     grid-template-columns: 1fr;

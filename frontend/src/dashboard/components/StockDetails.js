@@ -5,6 +5,7 @@ import HistoricalChart from "./HistoricalChart";
 import GeneralContext from "../contexts/GeneralContext";
 
 const StockDetails = () => {
+  
   const { symbol } = useParams();
 
   const { marketStocks } = useContext(GeneralContext);
@@ -15,17 +16,46 @@ const StockDetails = () => {
   const [period, setPeriod] = useState("1yr");
   const [historicalData, setHistoricalData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [companyLoading, setCompanyLoading] = useState(true);
+  const [company, setCompany] = useState(null);
+
+
+useEffect(() => {
+  const fetchCompanyInfo = async () => {
+    try {
+      setCompany(null);
+      const response = await axios.get(
+        `http://localhost:3002/market/company/${symbol}`,
+      );
+
+      setCompany(response.data);
+    } catch (error) {
+      console.error(
+        "Failed to fetch company information:",
+        error.response?.data || error.message,
+      );
+      setCompany(null);
+    } finally {
+      setCompanyLoading(false);
+    }
+  };
+
+  fetchCompanyInfo();
+}, [symbol]);
+
 
   useEffect(() => {
     const fetchHistoricalData = async () => {
       try {
         setLoading(true);
 
-        const response = await axios.get(
-          `http://localhost:3002/market/history/${symbol}?period=${period}`,
-        );
+        // these lines will be used to  
 
-        setHistoricalData(response.data);
+        // const response = await axios.get(
+        //   `http://localhost:3002/market/history/${symbol}?period=${period}`,
+        // );
+
+        setHistoricalData(null);
       } catch (error) {
         console.error(
           "Failed to fetch historical data:",
@@ -39,7 +69,6 @@ const StockDetails = () => {
     fetchHistoricalData();
   }, [symbol, period]);
 
-
   if (!stock) {
     return <p>Stock not found.</p>;
   }
@@ -50,6 +79,23 @@ const StockDetails = () => {
       <p>
         {stock.symbol} · {stock.exchange}
       </p>
+
+      {companyLoading ? (
+        <p>Loading company information...</p>
+      ) : company ? (
+        <section className="company-information">
+          <h3>About {stock.name}</h3>
+          <p>{company.overview}</p>
+          <div>
+            <strong>Sector:</strong> {company.sector}
+          </div>
+          <div>
+            <strong>Industry:</strong> {company.industry}
+          </div>
+        </section>
+      ) : (
+        <p>Company information is currently unavailable.</p>
+      )}
 
       <div className="period-buttons">
         {["1m", "6m", "1yr", "3yr", "5yr", "max"].map((item) => (

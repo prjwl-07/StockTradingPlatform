@@ -3,6 +3,9 @@ const {
   getAllStocks: getAllMarketStocks,
 } = require("../market/dummyMarket");
 
+const { getCompanyInfo } = require("../market/companyInfo");
+
+// bharatApi req for original data
 const getStockQuote = async (req, res) => {
   try {
     const { symbol } = req.params;
@@ -40,6 +43,7 @@ const getStockQuote = async (req, res) => {
     });
   }
 };
+
 
 const getStockQuotes = async (req, res) => {
   try {
@@ -90,6 +94,7 @@ const getAllStocks = async (req, res) => {
   }
 };
 
+// to get all historical data for the chart by using indianapi
 const getHistoricalData = async (req, res) => {
   try {
     const { symbol } = req.params;
@@ -141,9 +146,34 @@ const getHistoricalData = async (req, res) => {
   }
 };
 
+// to show company Details in stockDetails component
+const getCompanyDetails = (req, res) => {
+  try {
+    const { symbol } = req.params;
+    const company = getCompanyInfo(symbol);
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company information not found",
+      });
+    }
+
+    return res.status(200).json({
+      symbol: symbol.toUpperCase(),
+      ...company,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to fetch company information",
+    });
+  }
+};
+
+
 module.exports = {
   getStockQuote,
   getStockQuotes,
   getAllStocks,
-  getHistoricalData
+  getHistoricalData,
+  getCompanyDetails
 };
