@@ -1,0 +1,64 @@
+
+.historical-chart {
+  width: 100%;
+  height: 60vh;
+  min-height: 20rem;
+}
+
+.period-buttons {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.period-buttons button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.period-buttons button:hover {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.period-buttons button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+
+.company-information {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+.company-information h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.company-information p {
+  margin: 0 0 14px;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.company-information div {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.company-information strong {
+  display: inline-block;
+  min-width: 75px;
+  color: #1e293b;
+}

@@ -1,0 +1,94 @@
+/* Funds View */
+.margin-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.margin-highlight-box {
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.margin-highlight-box.blue-bg {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+.margin-highlight-box.grey-bg {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.margin-highlight-box .m-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.margin-highlight-box .m-val {
+  margin: 2px 0 0 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+}
+
+.fund-details-table {
+  gap: 10px;
+}
+
+.fund-row {
+  font-size: 0.83rem;
+  color: #475569;
+}
+
+.fund-row.total-row {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.fund-row-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 4px 0;
+}
+
+.account-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.account-type-badge.pending {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.commodity-promo {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.promo-icon {
+  font-size: 2.2rem;
+  color: #f97316;
+  margin-bottom: 12px;
+}
+
+.commodity-promo h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.commodity-promo p {
+  font-size: 0.83rem;
+  color: #64748b;
+  margin: 6px 0;
+}

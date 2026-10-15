@@ -75,10 +75,10 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-page d-flex justify-content-center align-items-center">
       <div className="login-card">
         <div className="text-center mb-4">
-          <div className="brand-icon mb-3">
+          <div className="brand-icon d-flex align-items-center justify-content-center mb-3">
             <i className="fa-solid fa-chart-line"></i>
           </div>
 

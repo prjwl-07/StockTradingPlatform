@@ -1,0 +1,94 @@
+/* Filter Tab Bars */
+.filter-tab-bar {
+  gap: 8px;
+}
+
+.tab-filter-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tab-filter-btn:hover {
+  background: #f1f5f9;
+}
+
+.tab-filter-btn.active {
+  background: var(--accent-blue);
+  color: #ffffff;
+  border-color: var(--accent-blue);
+}
+
+
+/* Orders Empty & Table View */
+.order-id-cell {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.order-type-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.order-type-badge.buy {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.order-type-badge.sell {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.order-status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.order-status-badge.executed {
+  color: #059669;
+}
+
+.no-orders-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.no-orders-icon {
+  width: 60px;
+  height: 60px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 16px auto;
+}
+
+.no-orders-card h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.no-orders-card p {
+  margin: 6px 0 20px 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}

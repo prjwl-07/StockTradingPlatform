@@ -1,0 +1,90 @@
+/* Apps Grid */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.app-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.app-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.06);
+}
+
+.app-card-top {
+  margin-bottom: 14px;
+}
+
+.app-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.app-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.app-badge.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.app-badge.purple {
+  background: #f5f3ff;
+  color: #8b5cf6;
+}
+.app-badge.orange {
+  background: #fff7ed;
+  color: #ea580c;
+}
+.app-badge.green {
+  background: #ecfdf5;
+  color: #10b981;
+}
+.app-badge.grey {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.app-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.app-title {
+  margin: 4px 0 6px 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.app-desc {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
+}

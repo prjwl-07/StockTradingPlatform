@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BuyActionWindow from "../components/BuyActionWindow";
+import BuyActionWindow from "../features/trading/BuyActionWindow";
 
 const GeneralContext = React.createContext({
   openBuyWindow: (uid, mode = "BUY") => {},

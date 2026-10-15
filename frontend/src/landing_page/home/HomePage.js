@@ -4,7 +4,7 @@ import Awards from "./Awards";
 import Stats from "./Stats";
 import Pricing from "./Pricing";
 import Education from "./Education";
-import OpenAccount from "../OpenAccount";
+import OpenAccount from "../shared/OpenAccount";
 
 import "./home.css";
 
