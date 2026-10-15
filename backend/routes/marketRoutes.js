@@ -3,14 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getStockQuote,
+  getBharatStockQuote,
   getStockQuotes,
   getAllStocks,
   getHistoricalData,
   getCompanyDetails,
 } = require("../controllers/marketController");
 
-router.get("/quote/:symbol", getStockQuote);
+router.get("/bharatquote/:symbol", getBharatStockQuote);
+
+router.get("/quote/:symbol", getStockQuotes);
 
 router.get("/quotes", getStockQuotes);
 

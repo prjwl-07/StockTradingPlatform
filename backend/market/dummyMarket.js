@@ -194,6 +194,26 @@ const stocks = {
   },
 };
 
+// Initialize market prices using real prices from BharatStock
+const initializePrices = (quotes) => {
+  quotes.forEach((quote) => {
+    const stock = stocks[quote.symbol?.toUpperCase()];
+
+    if (!stock || quote.currentPrice == null) {
+      return;
+    }
+
+    const price = Number(quote.currentPrice);
+
+    if (!Number.isFinite(price) || price <= 0) {
+      return;
+    }
+
+    stock.price = price;
+    stock.openingPrice = price;
+  });
+};
+
 // Change prices every 2 seconds
 const updatePrices = () => {
   Object.values(stocks).forEach((stock) => {
@@ -208,7 +228,14 @@ const updatePrices = () => {
   });
 };
 
-setInterval(updatePrices, 2000);
+// to start the
+let priceUpdateInterval = null;
+
+const startPriceUpdates = () => {
+  if (priceUpdateInterval) return;
+
+  priceUpdateInterval = setInterval(updatePrices, 2000);
+};
 
 // Return requested stocks
 const getStocks = (symbols) => {
@@ -266,8 +293,16 @@ const getAllStocks = () => {
   });
 };
 
+const getAllSymbols = () => {
+  return Object.keys(stocks);
+};
+
+
 module.exports = {
+  getAllSymbols,
   getStocks,
   getStock,
-  getAllStocks
+  getAllStocks,
+  initializePrices,
+  startPriceUpdates
 };

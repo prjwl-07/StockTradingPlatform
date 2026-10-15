@@ -12,6 +12,8 @@ const ordersRoutes = require("./routes/ordersRoutes");
 const authRoutes = require("./routes/authRoutes");
 const marketRoutes = require("./routes/marketRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
+const { initializeMarketData } = require("./controllers/marketController");
+
 
 // port and url
 const PORT = process.env.PORT || 3002;
@@ -45,6 +47,8 @@ const startServer = async () => {
     await mongoose.connect(url);
 
     console.log("MongoDB Connected");
+
+    // await initializeMarketData();
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
